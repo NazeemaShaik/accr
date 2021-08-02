@@ -123,37 +123,38 @@ while cv2.waitKey(1) < 1:
     (grabbed, frame) = vc.read()
     if not grabbed:
         exit()
-    x+=1
-    if not x%5==0:
-        continue
-
+#    x+=1
+#    if not x%5==0:
+#        continue
+#
     classes, scores, boxes = model.detect(frame, CONFIDENCE_THRESHOLD, NMS_THRESHOLD)
 
-    for box in boxes:
-        x, y, w, h = box
-        if x > width_25: continue
-        roi = frame[y:y+h, x:x+w]
-        rn = str(uuid.uuid1())
-        save_rn = os.path.join(save_dir, rn) + ".png"
-        cv2.imwrite(save_rn, roi)
-        text = detect_text(save_rn)
-        tobewritten = ""
-        if text:
-            for t in text:
-                tobewritten += t.description
-        save_tbw = os.path.join(save_dir, rn) + ".txt"
-        with open(save_tbw, "w") as handle:
-            handle.writelines(tobewritten)
+#    for box in boxes:
+#        x, y, w, h = box
+#        if x > width_25: continue
+#        roi = frame[y:y+h, x:x+w]
+#        rn = str(uuid.uuid1())
+#        save_rn = os.path.join(save_dir, rn) + ".png"
+#        cv2.imwrite(save_rn, roi)
+#        text = detect_text(save_rn)
+#        tobewritten = ""
+#        if text:
+#            for t in text:
+#                tobewritten += t.description
+#        save_tbw = os.path.join(save_dir, rn) + ".txt"
+#        with open(save_tbw, "w") as handle:
+#            handle.writelines(tobewritten)
 
     for (classid, score, box) in zip(classes, scores, boxes):
-        x, y, w, h = box
-        if x > width_25: continue
+#        x, y, w, h = box
+#        if x > width_25: continue
         color = COLORS[int(classid) % len(COLORS)]
         label = "%s : %f" % (class_names[classid[0]], score)
         cv2.rectangle(frame, box, color, 2)
         cv2.putText(frame, label, (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
 
+    frame_half = cv2.resize(image, (0,0), fx=0.1, fy=0.1)
     cv2.imshow("detections", frame)
 
 
